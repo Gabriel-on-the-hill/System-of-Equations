@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Systems of Equations — Edutrack Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Roboto+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <main class="app">
+        <div class="card">
+            <header>
+                <div class="brand">
+                    <div class="app-icon">∑</div>
+                    <div class="brand-text">
+                        <div class="app-name">EDUTRACK HUB</div>
+                        <div class="lesson-name">Systems of Two Linear Equations</div>
+                    </div>
+                </div>
+                <div id="activeTimer" class="timer-badge" hidden>15:00</div>
+                <button id="globalHomeBtn" class="nav-icon-btn home-btn" title="Return to Home">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                </button>
+            </header>
+
+            <!-- 1. Start Screen -->
+            <div id="startScreen">
+                <h1 class="fade-in">Select a Concept Module</h1>
+
+                <div class="student-info fade-in-delay">
+                    <label>Name: <input type="text" id="studentName" placeholder="E.g., Tracy"></label>
+                    <label>Date: <input type="date" id="studentDate"></label>
+                </div>
+
+                <div class="toggles-container fade-in-delay">
+                    <div class="mode-toggle">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="examModeToggle">
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="mode-label">Enable Exam Mode (No Feedback, Timer)</span>
+                    </div>
+
+                    <div class="mode-toggle">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="hardModeToggle">
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="mode-label">Hard Questions Only</span>
+                    </div>
+                </div>
+
+                <div class="modules-grid fade-in-delay">
+                    <button class="module-btn" data-module="guided">
+                        <h3>Section A: Guided Practice</h3>
+                        <p>In-Class, Tutor-Led (8-10 Qs)</p>
+                    </button>
+                    <button class="module-btn" data-module="independent">
+                        <h3>Section B: Independent Practice</h3>
+                        <p>Solo, In-Session (6-8 Qs)</p>
+                    </button>
+                    <button class="module-btn" data-module="homework">
+                        <h3>Section C: Homework</h3>
+                        <p>Deliberate Practice (10 Qs, Self-Check)</p>
+                    </button>
+                    <button class="module-btn btn-exam" data-module="exam">
+                        <h3>Final Assessment</h3>
+                        <p>Full Exam Module (10-15 Qs)</p>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Concept Introduction Screen -->
+        <section id="introScreen" hidden>
+            <div class="intro-header">
+                <div class="intro-icon">💡</div>
+                <h2>Before You Begin: The Big 3 Strategies</h2>
+            </div>
+
+            <div class="concept-cards">
+                <div class="concept-card">
+                    <div class="card-title">1. Desmos (The Primary Weapon)</div>
+                    <p>Type both equations exactly as they appear. Click the intersection point to find $(x, y)$. This
+                        solves the vast majority of systems on the SAT.</p>
+                </div>
+                <div class="concept-card">
+                    <div class="card-title">2. Substitution (The Sneaky Shortcut)</div>
+                    <p>If $y = 3x$ and $2x + y = 10$, swap $y$ for $3x$: $2x + 3x = 10$. Best when one variable is
+                        already alone on one side.</p>
+                </div>
+                <div class="concept-card">
+                    <div class="card-title">3. Elimination (The Stack Attack)</div>
+                    <p>Stack equations vertically. Add or subtract down the columns to kill a variable. Best for
+                        equations in $Ax + By = C$ form.</p>
+                </div>
+            </div>
+
+            <div class="intro-footer">
+                <button class="primary-btn" id="startPracticeBtn">Ready? Let's Go →</button>
+                <button class="nav-btn" id="introBackBtn">← Back</button>
+            </div>
+        </section>
+
+        <!-- 3. Quiz Area -->
+        <section id="quiz" hidden>
+            <div class="quiz-header">
+                <div id="progressText" class="muted">Question 1 of 10</div>
+                <div class="header-right">
+                    <div id="difficultyBadge" class="difficulty-badge">Medium</div>
+                </div>
+            </div>
+
+            <div id="slideContent" class="slide-content">
+                <div id="questionText" class="question"></div>
+                <div id="optionsGrid" class="options-grid"></div>
+            </div>
+
+            <!-- Feedback Area (Only in Practice/Homework) -->
+            <div id="feedbackArea" class="feedback-panel" hidden>
+                <div id="feedbackStatus" class="status-indicator"></div>
+                <div id="explanationText" class="explanation"></div>
+            </div>
+
+            <div class="controls">
+                <button id="prevBtn" class="btn-secondary" disabled>← Previous</button>
+                <button id="nextBtn" class="btn-primary">Next Question →</button>
+            </div>
+        </section>
+
+        <!-- 3. End Screen -->
+        <div id="endScreen" hidden>
+            <div class="end-content">
+                <div class="completion-icon">🎓</div>
+                <h2 id="endScreenTitle">Module Complete!</h2>
+                <p id="endScreenSubtitle" class="muted">Great job! You have completed this conceptual module.</p>
+                <div id="scoreDisplay" class="score-display">Score: 0 / 10</div>
+            </div>
+            <div class="end-actions">
+                <button id="copyBtn" class="btn-primary" style="background: var(--success); color: #fff;">📋 Copy My
+                    Score & Work</button>
+                <button id="reviewBtn" class="btn-secondary">Review Answers</button>
+                <button id="returnMenuBtn" class="btn-secondary">Return to Menu</button>
+            </div>
+            <div id="submitMsg" class="submit-msg"></div>
+        </div>
+
+        <!-- 4. Review Screen -->
+        <section id="reviewScreen" hidden>
+            <div class="quiz-header">
+                <button id="reviewBackBtn" class="nav-icon-btn">← End Screen</button>
+                <div class="header-right">
+                    <div id="reviewProgress" class="muted">Review: Question 1 of 10</div>
+                </div>
+            </div>
+            <div id="reviewContent" class="slide-content">
+                <div id="reviewQuestionText" class="question"></div>
+                <div id="reviewOptions" class="options-grid"></div>
+            </div>
+            <div class="feedback-panel">
+                <div id="reviewFeedbackStatus" class="status-indicator"></div>
+                <div id="reviewExplanationText" class="explanation"></div>
+            </div>
+            <div class="controls">
+                <button id="reviewPrevBtn" class="btn-secondary">← Previous</button>
+                <button id="reviewNextBtn" class="btn-primary">Next Review →</button>
+            </div>
+        </section>
+        </div>
+    </main>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="data/questions.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
